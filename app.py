@@ -9,21 +9,65 @@ st.set_page_config(
     layout="wide"
 )
 
-st.title("🔬 PendulumLab")
-st.write("Integrated STEM Mini-Research Project Analyzer")
+# --- SESSION STATE FOR NAVIGATION ---
+if "page" not in st.session_state:
+    st.session_state.page = "menu"
 
-# --- TOP TABS (Optimized for Mobile Browsing) ---
-home_tab, shm_tab, heat_tab, math_tab, industrial_tab = st.tabs([
-    "🏠 Home",
-    "📐 SHM & Gravity",
-    "🌡️ Heat Loss",
-    "➿ Chord Displacement",
-    "🏗️ Industrial App"
-])
+def go_to_menu():
+    st.session_state.page = "menu"
 
-# --- 1. HOME TAB ---
-with home_tab:
-    st.header("Welcome to PendulumLab")
+# --- STYLING FOR MOBILE APP MENU BUTTONS ---
+st.markdown("""
+<style>
+    .stButton>button {
+        width: 100%;
+        border-radius: 12px;
+        height: 55px;
+        font-size: 18px;
+        font-weight: bold;
+        margin-bottom: 10px;
+    }
+</style>
+""", unsafe_allow_html=True)
+
+# ==========================================
+# 1. MAIN MENU (PHONE APP HOME SCREEN)
+# ==========================================
+if st.session_state.page == "menu":
+    st.markdown("<h1 style='text-align: center;'>🔬 Pendulum LAB</h1>", unsafe_allow_html=True)
+    st.markdown("<p style='text-align: center; color: gray;'>Integrated STEM Mini-Research Project Analyzer</p>", unsafe_allow_html=True)
+    st.write("")
+    st.write("")
+
+    if st.button("🏠 HOME PAGE"):
+        st.session_state.page = "home"
+        st.rerun()
+
+    if st.button("📐 PHYSICS (SHM & Gravity)"):
+        st.session_state.page = "physics"
+        st.rerun()
+
+    if st.button("🌡️ CHEMISTRY (Heat Loss)"):
+        st.session_state.page = "chemistry"
+        st.rerun()
+
+    if st.button("➿ MATH (Chord Displacement)"):
+        st.session_state.page = "math"
+        st.rerun()
+
+    if st.button("🏗️ INDUSTRIAL APPLICATIONS"):
+        st.session_state.page = "industrial"
+        st.rerun()
+
+# ==========================================
+# 2. HOME PAGE
+# ==========================================
+elif st.session_state.page == "home":
+    if st.button("⬅️ Back to Menu"):
+        go_to_menu()
+        st.rerun()
+
+    st.title("🔬 Welcome to PendulumLab")
     st.write("### Integrated STEM Mini-Research Project Analyzer")
     
     st.markdown(r"""
@@ -35,19 +79,23 @@ with home_tab:
     * **🏗️ Industrial App:** Real-world engineering applications separated by Physics, Chemistry, and Mathematics.
     """)
     
-    st.info("👆 Tap on the tabs above to switch between different experimental modules easily on your phone!")
+    st.info("💡 Tap **Back to Menu** at the top to switch to other modules.")
 
-# --- 2. MODULE 1: SHM AND GRAVITY (SIMULATOR UP TO 90° WITH TOP METRICS BAR) ---
-with shm_tab:
+# ==========================================
+# 3. PHYSICS MODULE
+# ==========================================
+elif st.session_state.page == "physics":
+    if st.button("⬅️ Back to Menu"):
+        go_to_menu()
+        st.rerun()
+
     st.header("Simple Harmonic Motion & Live Simulator")
     
     st.subheader("Live pendulum simulator (interactive)")
     st.write(r"θ = -(g/L) sin θ — Drag the bob up to 90° with real-time metrics displayed at the top:")
 
-    # HTML5 Canvas with 90-degree limit and top metrics bar
     components.html("""
     <div style="display: flex; flex-direction: column; align-items: center; background-color: #0e1117; padding: 12px; border-radius: 12px; font-family: sans-serif;">
-        <!-- Top Metrics Bar -->
         <div style="display: flex; justify-content: space-around; width: 100%; max-width: 360px; margin-bottom: 10px; font-size: 13px; font-weight: bold; background: #1f2937; padding: 8px; border-radius: 8px;">
             <span id="angleText" style="color: #60a5fa;">θ: 45.0°</span>
             <span id="sText" style="color: #34d399;">s: 0.79 m</span>
@@ -227,8 +275,14 @@ with shm_tab:
         "be used to determine the acceleration due to gravity $g$ graphically."
     )
 
-# --- 3. MODULE 2: HEAT LOSS ---
-with heat_tab:
+# ==========================================
+# 4. CHEMISTRY MODULE
+# ==========================================
+elif st.session_state.page == "chemistry":
+    if st.button("⬅️ Back to Menu"):
+        go_to_menu()
+        st.rerun()
+
     st.header("Temperature & Heat Loss Analysis (Chemistry)")
     
     st.write(
@@ -314,8 +368,14 @@ with heat_tab:
         "and static conditions of the pendulum."
     )
 
-# --- 4. MODULE 3: MATHEMATICS ANALYSIS ---
-with math_tab:
+# ==========================================
+# 5. MATH MODULE
+# ==========================================
+elif st.session_state.page == "math":
+    if st.button("⬅️ Back to Menu"):
+        go_to_menu()
+        st.rerun()
+
     st.header("Integrated STEM Mini-Research - Mathematics Analysis")
     st.write("Comparative analysis between Arc Length ($s$) and Chord Displacement ($d$) for amplitude angles.")
 
@@ -366,14 +426,19 @@ with math_tab:
         r"($\sin\theta \approx \theta$) changes as the angle amplitude increases."
     )
 
-# --- 5. MODULE 4: INDUSTRIAL APPLICATIONS (SEPARATED INTO SUB-TABS) ---
-with industrial_tab:
+# ==========================================
+# 6. INDUSTRIAL APPLICATIONS MODULE
+# ==========================================
+elif st.session_state.page == "industrial":
+    if st.button("⬅️ Back to Menu"):
+        go_to_menu()
+        st.rerun()
+
     st.header("Industrial & Real-World Applications")
     st.write(
         "Explore real-world engineering and industrial implementations bridged from our STEM laboratory experiments."
     )
     
-    # Nested Sub-Tabs to completely separate Physics, Chemistry, and Mathematics
     ind_phys_sub, ind_chem_sub, ind_math_sub = st.tabs([
         "📐 Physics (TMD)", 
         "🌡️ Chemistry (Cooling)", 
